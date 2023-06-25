@@ -1,0 +1,44 @@
+.taskCard {
+  display: flex;
+}
+
+.taskTime {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  margin-right: 100px;
+  width: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.taskContent {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 600px;
+}
+
+.taskTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.taskDesc {
+  font-size: 15px;
+  color: #555555;
+  margin-bottom: 8px;
+}
+
+.taskDuration,
+.taskCreated {
+  font-size: 12px;
+  color: #999999;
+  margin-bottom: 4px;
+}
+
+.taskCreated {
+  margin-bottom: 0;
+}
