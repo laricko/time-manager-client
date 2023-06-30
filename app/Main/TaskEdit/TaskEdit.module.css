@@ -1,0 +1,52 @@
+.xBtn {
+  position: relative;
+  float: right;
+  background: red;
+  color: white;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+}
+
+.formLabel {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.CardDataInputData {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: both;
+}
+
+.SubmitCardBtn {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.SubmitCardBtn:hover {
+  background-color: #45a049;
+}
+
+.CardEdit {
+  justify-items: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.CardNonEditableData {
+  color: #999999;
+}
