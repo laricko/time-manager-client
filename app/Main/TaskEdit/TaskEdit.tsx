@@ -1,6 +1,12 @@
 import style from "./TaskEdit.module.css";
 
 export default function TaskEdit({ task, setShowTaskCard }) {
+  let start = task.start
+    ? new Date(task.start).toISOString().split(".")[0]
+    : "";
+  let finish = task.finish
+    ? new Date(task.finish).toISOString().split(".")[0]
+    : "";
   return (
     <div className={style.CardEdit}>
       <button className={style.xBtn} onClick={() => setShowTaskCard(false)}>
@@ -28,7 +34,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
           <input
             className={style.CardDataInputData}
             type="datetime-local"
-            defaultValue={task.start}
+            defaultValue={start}
           />
         </label>
         <label className={style.formLabel}>
@@ -36,7 +42,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
           <input
             className={style.CardDataInputData}
             type="datetime-local"
-            defaultValue={task.finish}
+            defaultValue={finish}
           />
         </label>
         <button type="submit" className={style.SubmitCardBtn}>
