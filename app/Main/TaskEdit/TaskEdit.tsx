@@ -1,6 +1,5 @@
-import axios from "axios";
-
 import style from "./TaskEdit.module.css";
+import axiosService from "../axiosService";
 
 export default function TaskEdit({ task, setShowTaskCard }) {
   let start = task.start
@@ -10,10 +9,31 @@ export default function TaskEdit({ task, setShowTaskCard }) {
     ? new Date(task.finish).toISOString().split(".")[0]
     : "";
 
+  const testCredentials = {
+    Authorization: "Basic bGFyaTpzdHJpbmc=",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+  };
+
   let createTaskButtonListener = (event) => {
     event.preventDefault();
-    const title = event.target.elements.title.value
-    console.log(title)
+    const data = event.target.elements;
+    axiosService
+      .post(
+        "/task/",
+        {
+          title: data.title.value,
+          description: data.description.value,
+          start: data.start.value,
+          finish: data.finish.value,
+        },
+        {
+          headers: testCredentials,
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        window.location.reload();
+      });
   };
 
   return (
@@ -29,6 +49,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             type="text"
             defaultValue={task.title}
             id="title"
+            required
           />
         </label>
         <label className={style.formLabel}>
@@ -38,6 +59,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             type="text"
             defaultValue={task.description}
             id="description"
+            required
           />
         </label>
         <label className={style.formLabel}>
@@ -47,6 +69,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             type="datetime-local"
             defaultValue={start}
             id="start"
+            required
           />
         </label>
         <label className={style.formLabel}>
@@ -56,12 +79,10 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             type="datetime-local"
             defaultValue={finish}
             id="finish"
+            required
           />
         </label>
-        <button
-          type="submit"
-          className={style.SubmitCardBtn}
-        >
+        <button type="submit" className={style.SubmitCardBtn}>
           Submit
         </button>
       </form>
