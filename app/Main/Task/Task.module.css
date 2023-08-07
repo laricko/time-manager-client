@@ -50,3 +50,35 @@
   font-weight: bold;
   margin-bottom: 8px;
 }
+
+.taskTitleHeader button {
+  width: 20px;
+}
+
+.taskDeleteConfirmation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 100px;
+  font-size: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  background-color: wheat;
+}
+
+.taskDeleteConfirmation p {
+  margin-bottom: 20px;
+}
+
+.taskDeleteConfirmation .buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.taskDeleteConfirmation button {
+  height: 30px;
+  width: 40px;
+}
+

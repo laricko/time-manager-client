@@ -1,5 +1,6 @@
 import style from "./TaskEdit.module.css";
 import axiosService from "../axiosService";
+import axios from "axios";
 
 export default function TaskEdit({ task, setShowTaskCard }) {
   let start = task.start
@@ -14,34 +15,57 @@ export default function TaskEdit({ task, setShowTaskCard }) {
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
   };
 
-  let createTaskButtonListener = (event) => {
-    event.preventDefault();
-    const data = event.target.elements;
-    axiosService
-      .post(
-        "/task/",
-        {
-          title: data.title.value,
-          description: data.description.value,
-          start: data.start.value,
-          finish: data.finish.value,
-        },
-        {
-          headers: testCredentials,
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        window.location.reload();
-      });
-  };
+  let taskButtonHandle;
+
+  if (!task) {
+    taskButtonHandle = (event) => {
+      event.preventDefault();
+      const data = event.target.elements;
+      axiosService
+        .post(
+          "/task/",
+          {
+            title: data.title.value,
+            description: data.description.value,
+            start: data.start.value,
+            finish: data.finish.value,
+          },
+          {
+            headers: testCredentials,
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          window.location.reload();
+        });
+    };
+  } else {
+    taskButtonHandle = (event) => {
+      event.preventDefault();
+      const data = event.target.elements;
+      axiosService
+        .patch(
+          `task/${task.id}`,
+          {
+            title: data.title.value,
+            description: data.description.value,
+            start: data.start.value,
+            finish: data.finish.value,
+          },
+          { headers: testCredentials, withCredentials: true }
+        )
+        .then((response) => {
+          window.location.reload();
+        });
+    };
+  }
 
   return (
     <div className={style.CardEdit}>
       <button className={style.xBtn} onClick={() => setShowTaskCard(false)}>
         X
       </button>
-      <form onSubmit={createTaskButtonListener}>
+      <form onSubmit={taskButtonHandle}>
         <label className={style.formLabel}>
           Title
           <input
