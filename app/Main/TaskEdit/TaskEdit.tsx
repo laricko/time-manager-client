@@ -1,6 +1,6 @@
 import style from "./TaskEdit.module.css";
 import axiosService from "../axiosService";
-import axios from "axios";
+import testCredentialsHeaders from "../testCredentialsHeaders";
 
 export default function TaskEdit({ task, setShowTaskCard }) {
   let start = task.start
@@ -9,12 +9,6 @@ export default function TaskEdit({ task, setShowTaskCard }) {
   let finish = task.finish
     ? new Date(task.finish).toISOString().split(".")[0]
     : "";
-
-  const testCredentials = {
-    Authorization: "Basic bGFyaTpzdHJpbmc=",
-    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-  };
-
   let taskButtonHandle;
 
   if (!task) {
@@ -31,8 +25,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             finish: data.finish.value,
           },
           {
-            headers: testCredentials,
-            withCredentials: true,
+            headers: testCredentialsHeaders,
           }
         )
         .then((response) => {
@@ -45,14 +38,14 @@ export default function TaskEdit({ task, setShowTaskCard }) {
       const data = event.target.elements;
       axiosService
         .patch(
-          `task/${task.id}`,
+          `/task/${task.id}`,
           {
             title: data.title.value,
             description: data.description.value,
             start: data.start.value,
             finish: data.finish.value,
           },
-          { headers: testCredentials, withCredentials: true }
+          { headers: testCredentialsHeaders }
         )
         .then((response) => {
           window.location.reload();

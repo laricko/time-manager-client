@@ -3,6 +3,8 @@ import { useState } from "react";
 import style from "./Task.module.css";
 import { TaskEdit } from "../TaskEdit";
 import { ShowMoreText } from "../ShowMoreText";
+import axiosService from "../axiosService";
+import testCredentialsHeaders from "../testCredentialsHeaders";
 
 export default function Task({
   task,
@@ -42,19 +44,24 @@ export default function Task({
 
   const taskEdit = <TaskEdit task={task} setShowTaskCard={onClose} />;
 
+  let deleteTask = () => {
+    axiosService
+      .delete(`/task/${task.id}`, {
+        headers: testCredentialsHeaders,
+        withCredentials: false,
+      })
+      .then((response) => {
+        window.location.reload();
+      });
+  };
+
   const taskDeleteConfirmation = (
     <div className={style.taskDeleteConfirmation}>
       <p>
         Are you sure want to delete <strong>{task.title}</strong>?
       </p>
       <div className={style.buttons}>
-        <button
-          onClick={() => {
-            console.log("DELETE MAZAFAKA");
-          }}
-        >
-          Yes
-        </button>
+        <button onClick={deleteTask}>Yes</button>
         <button
           onClick={() => {
             setShowDelete(false);
