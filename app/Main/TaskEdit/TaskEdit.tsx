@@ -1,64 +1,49 @@
+import { useForm } from "react-hook-form";
+
 import style from "./TaskEdit.module.css";
 import axiosService from "../axiosService";
 import testCredentialsHeaders from "../testCredentialsHeaders";
 
 export default function TaskEdit({ task, setShowTaskCard }) {
-  let start = task.start
-    ? new Date(task.start).toISOString().split(".")[0]
-    : "";
-  let finish = task.finish
-    ? new Date(task.finish).toISOString().split(".")[0]
-    : "";
-  let taskButtonHandle;
+  const { register, handleSubmit } = useForm();
 
-  if (!task) {
-    taskButtonHandle = (event) => {
-      event.preventDefault();
-      const data = event.target.elements;
+  const onSubmit = (data) => {
+    if (Object.keys(task).length == 0) {
       axiosService
-        .post(
-          "/task/",
-          {
-            title: data.title.value,
-            description: data.description.value,
-            start: data.start.value,
-            finish: data.finish.value,
-          },
-          {
-            headers: testCredentialsHeaders,
-          }
-        )
+        .post("/task/", data, { headers: testCredentialsHeaders })
         .then((response) => {
           window.location.reload();
         });
-    };
-  } else {
-    taskButtonHandle = (event) => {
-      event.preventDefault();
-      const data = event.target.elements;
-      axiosService
-        .patch(
-          `/task/${task.id}`,
-          {
-            title: data.title.value,
-            description: data.description.value,
-            start: data.start.value,
-            finish: data.finish.value,
-          },
-          { headers: testCredentialsHeaders }
-        )
-        .then((response) => {
-          window.location.reload();
-        });
-    };
-  }
+    } else {
+      const updatedFields = {};
+
+      for (const key in data) {
+        if (["start", "finish"].includes(key)) {
+          data[key] = data[key].replace("T", " ");
+        }
+        console.log(data[key], "---", task[key], data[key] !== task[key]);
+        if (data[key] !== task[key]) {
+          updatedFields[key] = data[key];
+        }
+      }
+
+      console.log(updatedFields);
+
+      axiosService.patch(`/task/${task.id}`, updatedFields, {
+        headers: testCredentialsHeaders,
+      });
+      // .then((response) => {
+      //   window.location.reload();
+      // });
+    }
+  };
 
   return (
     <div className={style.CardEdit}>
       <button className={style.xBtn} onClick={() => setShowTaskCard(false)}>
         X
       </button>
-      <form onSubmit={taskButtonHandle}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label className={style.formLabel}>
           Title
           <input
@@ -67,6 +52,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             defaultValue={task.title}
             id="title"
             required
+            {...register("title")}
           />
         </label>
         <label className={style.formLabel}>
@@ -77,6 +63,7 @@ export default function TaskEdit({ task, setShowTaskCard }) {
             defaultValue={task.description}
             id="description"
             required
+            {...register("description")}
           />
         </label>
         <label className={style.formLabel}>
@@ -84,9 +71,10 @@ export default function TaskEdit({ task, setShowTaskCard }) {
           <input
             className={style.CardDataInputData}
             type="datetime-local"
-            defaultValue={start}
+            defaultValue={task.start}
             id="start"
             required
+            {...register("start")}
           />
         </label>
         <label className={style.formLabel}>
@@ -94,9 +82,10 @@ export default function TaskEdit({ task, setShowTaskCard }) {
           <input
             className={style.CardDataInputData}
             type="datetime-local"
-            defaultValue={finish}
+            defaultValue={task.finish}
             id="finish"
             required
+            {...register("finish")}
           />
         </label>
         <button type="submit" className={style.SubmitCardBtn}>
