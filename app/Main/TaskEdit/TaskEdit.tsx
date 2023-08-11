@@ -21,20 +21,18 @@ export default function TaskEdit({ task, setShowTaskCard }) {
         if (["start", "finish"].includes(key)) {
           data[key] = data[key].replace("T", " ");
         }
-        console.log(data[key], "---", task[key], data[key] !== task[key]);
         if (data[key] !== task[key]) {
           updatedFields[key] = data[key];
         }
       }
 
-      console.log(updatedFields);
-
-      axiosService.patch(`/task/${task.id}`, updatedFields, {
-        headers: testCredentialsHeaders,
-      });
-      // .then((response) => {
-      //   window.location.reload();
-      // });
+      axiosService
+        .patch(`/task/${task.id}`, updatedFields, {
+          headers: testCredentialsHeaders,
+        })
+        .then((response) => {
+          window.location.reload();
+        });
     }
   };
 
